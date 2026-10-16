@@ -1,0 +1,8 @@
+work/
+transcript
+vsim.wlf
+*.wlf
+*.vcd
+*.fst
+results/*
+!results/.gitkeep
