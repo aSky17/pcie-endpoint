@@ -1,15 +1,15 @@
 # PCI Express 4.0 Endpoint RTL and UVM Verification Project
 
 **Status:** Working project plan --- intentionally adjustable as the
-specification is studied\
+specification is studied  
 **Specification baseline:** PCI Express Base Specification, Revision
-4.0, Version 1.0 (2017-10-05), supplied as `PCIE_V4.0.pdf`\
+4.0, Version 1.0 (2017-10-05), supplied as `PCIE_V4.0.pdf`  
 **Primary goal:** Build a substantial PCIe Endpoint RTL design and a UVM
 verification environment from scratch, using the specification alongside
 implementation rather than reading the entire specification before
 beginning.
 
-------------------------------------------------------------------------
+---
 
 ## 1. Project goal
 
@@ -25,55 +25,63 @@ electrical PHY implementation.
 
 ### Final deliverables
 
-1.  Synthesizable SystemVerilog RTL for the agreed Endpoint
-    functionality.
-2.  A documented packet-level interface to a **simplified PHY/link
-    partner model**.
-3.  A UVM environment with sequencer, driver, monitor,
-    scoreboard/reference model, agents, assertions, and functional
+1. Synthesizable SystemVerilog RTL for the agreed Endpoint
+  functionality.
+2. A documented packet-level interface to a **simplified PHY/link
+  partner model**.
+3. A UVM environment with sequencer, driver, monitor,
+  scoreboard/reference model, agents, assertions, and functional
     coverage.
-4.  Directed, negative, constrained-random, concurrency, reset, and
-    error-injection tests.
-5.  Regression scripts, reproducible simulator instructions, and useful
-    logs.
-6.  A specification-to-implementation traceability matrix listing
-    implemented, simplified, and deferred requirements.
-7.  Architecture diagrams, packet-format notes, design decisions, known
-    limitations, and a final project report.
+4. Directed, negative, constrained-random, concurrency, reset, and
+  error-injection tests.
+5. Regression scripts, reproducible simulator instructions, and useful
+  logs.
+6. A specification-to-implementation traceability matrix listing
+  implemented, simplified, and deferred requirements.
+7. Architecture diagrams, packet-format notes, design decisions, known
+  limitations, and a final project report.
+
+
 
 ## 2. Scope and design boundaries
 
+
+
 ### In scope
 
--   One PCIe Endpoint DUT.
--   PCIe 4.0 as the reference specification.
--   Transaction Layer Packet (TLP) creation, decoding, routing decisions
-    appropriate to an Endpoint, and request/completion handling.
--   A minimal but meaningful configuration space and Base Address
-    Register (BAR) behavior.
--   Memory Read and Memory Write transactions in the selected supported
-    forms.
--   Completion generation and tracking of outstanding requests where
-    included in the agreed scope.
--   Data Link Layer mechanisms added incrementally, including packet
-    sequence/integrity and reliable delivery behavior.
--   Flow-control behavior for the implemented packet classes.
--   Error detection and defined responses for selected invalid or
-    unsupported requests.
--   UVM verification built alongside each RTL phase.
+- One PCIe Endpoint DUT.
+- PCIe 4.0 as the reference specification.
+- Transaction Layer Packet (TLP) creation, decoding, routing decisions
+appropriate to an Endpoint, and request/completion handling.
+- A minimal but meaningful configuration space and Base Address
+Register (BAR) behavior.
+- Memory Read and Memory Write transactions in the selected supported
+forms.
+- Completion generation and tracking of outstanding requests where
+included in the agreed scope.
+- Data Link Layer mechanisms added incrementally, including packet
+sequence/integrity and reliable delivery behavior.
+- Flow-control behavior for the implemented packet classes.
+- Error detection and defined responses for selected invalid or
+unsupported requests.
+- UVM verification built alongside each RTL phase.
+
+
 
 ### Explicitly out of scope initially
 
--   A production-grade PCIe Gen4 electrical PHY, analog front end,
-    SerDes, equalization, clock recovery, or board-level
-    signal-integrity implementation.
--   Full compliance with every optional PCIe 4.0 feature.
--   A complete PCIe switch, multi-function device, SR-IOV, Advanced
-    Error Reporting, ATS, PASID, IDE, or other advanced optional
-    features unless deliberately added later.
--   Physical hardware bring-up or PCI-SIG compliance certification.
--   Claiming that a simulation project is fully PCIe-compliant merely
-    because selected features pass tests.
+- A production-grade PCIe Gen4 electrical PHY, analog front end,
+SerDes, equalization, clock recovery, or board-level
+signal-integrity implementation.
+- Full compliance with every optional PCIe 4.0 feature.
+- A complete PCIe switch, multi-function device, SR-IOV, Advanced
+Error Reporting, ATS, PASID, IDE, or other advanced optional
+features unless deliberately added later.
+- Physical hardware bring-up or PCI-SIG compliance certification.
+- Claiming that a simulation project is fully PCIe-compliant merely
+because selected features pass tests.
+
+
 
 ### Key abstraction
 
@@ -88,38 +96,42 @@ convenient internal packet bus is itself a standardized PCIe interface.
 
 For each phase, follow this cycle:
 
-1.  **Read the relevant specification sections.** Read a manageable
-    portion rather than trying to memorize the entire PDF.
-2.  **Extract requirements.** Record packet fields, state transitions,
-    constraints, ordering rules, reset behavior, and error cases that
+1. **Read the relevant specification sections.** Read a manageable
+  portion rather than trying to memorize the entire PDF.
+2. **Extract requirements.** Record packet fields, state transitions,
+  constraints, ordering rules, reset behavior, and error cases that
     apply to the planned feature.
-3.  **Classify each requirement.** Mark it as:
-    -   Implement in this project;
-    -   Implement in a simplified form, with the simplification
-        documented;
-    -   Study but defer; or
-    -   Out of scope.
-4.  **Write a phase design note.** Define the supported subset,
-    interfaces, assumptions, and expected behavior.
-5.  **Write tests before or alongside RTL.** Add test scenarios and
-    scoreboard expectations before relying on a passing simulation.
-6.  **Implement RTL incrementally.** Keep modules small and run
-    lint/compile checks often.
-7.  **Verify the phase.** Run directed and negative tests first, then
-    constrained-random tests and assertions where appropriate.
-8.  **Review failures against the specification.** Do not alter the
-    reference model simply to make the DUT pass; confirm which behavior
+3. **Classify each requirement.** Mark it as:
+  - Implement in this project;
+  - Implement in a simplified form, with the simplification
+  documented;
+  - Study but defer; or
+  - Out of scope.
+4. **Write a phase design note.** Define the supported subset,
+  interfaces, assumptions, and expected behavior.
+5. **Write tests before or alongside RTL.** Add test scenarios and
+  scoreboard expectations before relying on a passing simulation.
+6. **Implement RTL incrementally.** Keep modules small and run
+  lint/compile checks often.
+7. **Verify the phase.** Run directed and negative tests first, then
+  constrained-random tests and assertions where appropriate.
+8. **Review failures against the specification.** Do not alter the
+  reference model simply to make the DUT pass; confirm which behavior
     the specification and agreed subset require.
-9.  **Close the phase.** Record test results, coverage, known gaps, and
-    the next phase's dependencies.
+9. **Close the phase.** Record test results, coverage, known gaps, and
+  the next phase's dependencies.
 
 The roadmap below is a starting plan, not a frozen feature list.
 Finalize detailed feature choices only after reading the relevant
 sections.
 
-------------------------------------------------------------------------
+---
+
+
 
 ## 4. Provisional phase roadmap
+
+
 
 ## Phase 0 --- Project definition and simulation foundation
 
@@ -427,228 +439,5 @@ matrix. - README with architecture, build instructions, test commands,
 diagrams, and known limitations. - Final report explaining what was
 implemented, how it was verified, and what remains outside scope.
 
-------------------------------------------------------------------------
+---
 
-## 5. Proposed RTL architecture
-
-This is a starting architecture; exact module boundaries are to be
-confirmed after the first packet/interface design review.
-
-``` text
-                    UVM Testbench
- ┌──────────────────────────────────────────────────────┐
- │ Sequences → Sequencer → Driver / Link-Partner Model  │
- │                         │                            │
- │ Monitor → Scoreboard / Reference Model / Coverage    │
- │ Assertions + Error Injection + Configuration Model   │
- └─────────────────────────┬────────────────────────────┘
-                           │ packet-level boundary
- ┌─────────────────────────▼────────────────────────────┐
- │                    PCIe Endpoint DUT                 │
- │                                                      │
- │  Packet RX / Decode → Request Classification         │
- │                          │                           │
- │             ┌────────────┼─────────────┐             │
- │             ▼            ▼             ▼             │
- │       Config Space   BAR / Memory   Error Handling   │
- │             │            │                           │
- │             └────────────┼─────────────┘             │
- │                          ▼                           │
- │                  Completion Builder                 │
- │                          │                           │
- │               TLP TX / Arbitration                  │
- │                          │                           │
- │         Data Link TX/RX and Flow Control             │
- │            (introduced in later phases)              │
- └──────────────────────────────────────────────────────┘
-```
-
-Possible modules, subject to design review:
-
--   `pcie_endpoint_top.sv`
--   `pcie_tlp_rx.sv`
--   `pcie_tlp_decode.sv`
--   `pcie_request_dispatch.sv`
--   `pcie_config_space.sv`
--   `pcie_bar_decode.sv`
--   `pcie_register_block.sv` or a small RAM model
--   `pcie_completion_builder.sv`
--   `pcie_tlp_tx.sv`
--   `pcie_dll_tx.sv` / `pcie_dll_rx.sv` (later phase)
--   `pcie_flow_control.sv` (later phase)
--   `pcie_timeout_error.sv` (if in scope)
-
-Do not create every module up front. Split modules when the protocol
-responsibilities and interfaces are understood.
-
-## 6. Proposed UVM verification architecture
-
-``` text
-pcie_env
- ├── packet/link agent
- │    ├── sequencer
- │    ├── driver
- │    └── monitor
- ├── configuration/reference model
- ├── scoreboard
- ├── protocol assertions
- └── functional coverage collector
-```
-
-The initial agent may model a simplified Root Complex/link partner. If
-Endpoint Requester behavior is later added, the testbench must also
-model host memory and return completions to the DUT.
-
-### Verification principles
-
--   Use a reference model independent of DUT implementation details.
--   Make the monitor reconstruct actual observed transactions rather
-    than trusting driver intent.
--   Include negative tests and error injection, not just legal happy
-    paths.
--   Check protocol invariants with assertions in addition to scoreboard
-    comparisons.
--   Use constrained random only after directed tests establish correct
-    basic behavior.
--   Make failures reproducible with seeds and concise transaction logs.
--   Cover legal combinations from the implemented subset; do not count
-    unimplemented features as coverage holes without classifying them.
-
-## 7. Repository layout
-
-``` text
-pcie-endpoint-project/
-├── README.md
-├── docs/
-│   ├── architecture.md
-│   ├── specification_traceability.md
-│   ├── packet_formats.md
-│   ├── verification_plan.md
-│   ├── phase_logs/
-│   └── diagrams/
-├── rtl/
-│   ├── common/
-│   ├── transaction_layer/
-│   ├── configuration/
-│   ├── data_link_layer/
-│   └── endpoint/
-├── tb/
-│   ├── interfaces/
-│   ├── agents/
-│   ├── sequences/
-│   ├── env/
-│   ├── scoreboard/
-│   ├── reference_model/
-│   ├── coverage/
-│   └── tests/
-├── assertions/
-├── scripts/
-├── sim/
-│   ├── filelists/
-│   └── configs/
-└── results/
-```
-
-The exact layout may change to suit the chosen simulator and build flow.
-
-## 8. Specification reading strategy
-
-Use `PCIE_V4.0.pdf` as the primary reference. Read by feature
-dependency, not cover-to-cover.
-
-  -----------------------------------------------------------------------
-  Work item               Starting specification  How to use it
-                          area                    
-  ----------------------- ----------------------- -----------------------
-  Overall architecture    Chapter 1               Establish context and
-  and terminology                                 boundaries
-
-  TLP structure and       Chapter 2 §§2.1--2.2    Start Phase 1; extract
-  packet fields                                   exact fields and rules
-
-  Endpoint configuration  Relevant Chapter 7      Confirm precise
-  and BARs                sections plus Chapter 2 requirements before
-                          configuration rules     coding
-
-  Memory requests and     Chapter 2               Implement one supported
-  completions             request/completion      packet class at a time
-                          subsections             
-
-  Transaction ordering    Chapter 2 ordering      Add only rules needed
-                          section                 by supported traffic
-
-  Data Link Layer         Chapter 3               Add sequencing,
-                                                  integrity, ACK/NAK and
-                                                  replay incrementally
-
-  Flow control            Chapter 2 flow-control  Define credits and
-                          material and Chapter 3  buffers after basic
-                          procedures              packets work
-
-  Errors and timeouts     Relevant Chapter 2 and  Map each chosen rule to
-                          Chapter 3 sections      a test
-
-  DMA/requester extension Requester, completion,  Add only after the core
-                          and message sections    path is stable
-                          relevant to the         
-                          selected feature        
-  -----------------------------------------------------------------------
-
-**Important:** The table is a reading map, not a claim that the cited
-sections are the only relevant requirements. Follow references and
-dependencies inside the PDF, and record exact section/page references in
-the traceability document as each feature is finalized.
-
-## 9. Requirements traceability template
-
-Maintain a table like this from the beginning:
-
-  --------------------------------------------------------------------------------------------------------
-  ID         Feature / rule  Specification   Project     RTL module        Test(s)              Status
-                             section         decision                                           
-  ---------- --------------- --------------- ----------- ----------------- -------------------- ----------
-  CFG-001    Configuration   To be filled    Implement   Config space      `cfg_read_*`         Planned
-             Read of         from PDF                                                           
-             implemented                                                                        
-             register                                                                           
-
-  TLP-001    Decode          To be filled    Implement   TLP               `mem_write_*`        Planned
-             supported       from PDF        selected    decode/dispatch                        
-             Memory Write                    forms                                              
-
-  DLL-001    Detect packet   To be filled    Phase 6     DLL RX            `dll_lcrc_error_*`   Planned
-             integrity       from PDF        subset                                             
-             failure                                                                            
-  --------------------------------------------------------------------------------------------------------
-
-Do not fill in section numbers from memory: verify them in the PDF when
-the feature is studied.
-
-## 10. Definition of project completion
-
-The project is complete when the agreed feature set---not the entire
-PCIe specification---is implemented and verified, all exclusions are
-documented, and the final regression is repeatable.
-
-A strong result is not "I implemented all of PCIe." A strong, defensible
-result is: **"I implemented this clearly defined PCIe Endpoint subset,
-mapped each behavior to the specification, and verified normal,
-boundary, concurrent, and error scenarios with UVM, assertions,
-scoreboarding, and coverage."**
-
-## 11. Immediate next steps
-
-1.  Create the repository and this project plan.
-2.  Start Phase 1 with Chapter 2 §§2.1, 2.1.1, and 2.1.2.
-3.  For each section, produce a concise learning note and a requirements
-    list.
-4.  Continue into the relevant parts of §2.2 to establish the supported
-    packet formats.
-5.  Only then freeze the initial packet representation, interfaces, and
-    first RTL/testbench milestone.
-6.  Implement and verify the smallest useful vertical slice before
-    adding more packet types.
-
-This plan should be revised as the specification is read. Detailed
-feature choices remain open until their relevant rules and dependencies
-are understood.
