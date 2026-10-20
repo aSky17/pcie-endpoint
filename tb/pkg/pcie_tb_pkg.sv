@@ -1,0 +1,36 @@
+package pcie_tb_pkg;
+    import uvm_pkg::*;
+    import pcie_pkg::*;
+
+    `include "uvm_macros.svh"
+    `include "sequence_item/pcie_tlp_item.sv"
+    `include "sequencer/pcie_sequencer.sv"
+    `include "driver/pcie_driver.sv"
+    `include "monitor/pcie_monitor.sv"
+    `include "agent/pcie_agent.sv"
+    `include "sequences/pcie_base_seq.sv"
+    `include "sequences/pcie_smoke_seq.sv"
+    `include "sequences/pcie_random_seq.sv"
+    `include "sequences/pcie_config_seq.sv"
+    `include "sequences/pcie_byte_enable_seq.sv"
+    `include "sequences/pcie_error_seq.sv"
+    `include "sequences/pcie_backpressure_seq.sv"
+    `include "sequences/pcie_reset_prepare_seq.sv"
+    `include "sequences/pcie_reset_check_seq.sv"
+    `include "sequences/pcie_boundary_seq.sv"
+    `include "sequences/pcie_mixed_traffic_seq.sv"
+    `include "scoreboard/pcie_scoreboard.sv"
+    `include "coverage/pcie_coverage.sv"
+    `include "env/pcie_env.sv"
+    `include "tests/pcie_base_test.sv"
+    `include "tests/pcie_smoke_test.sv"
+    `include "tests/pcie_random_test.sv"
+    `include "tests/pcie_config_test.sv"
+    `include "tests/pcie_byte_enable_test.sv"
+    `include "tests/pcie_error_test.sv"
+    `include "tests/pcie_backpressure_test.sv"
+    `include "tests/pcie_reset_test.sv"
+    `include "tests/pcie_boundary_test.sv"
+    `include "tests/pcie_coverage_regression_test.sv"
+
+endpackage

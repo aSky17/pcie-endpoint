@@ -1,1 +1,18 @@
-# Add RTL files here as modules are implemented.
+rtl/pcie_pkg.sv
+tb/interface/pcie_packet_if.sv
+rtl/pcie_endpoint.sv
+rtl/pcie_tlp_codec.sv
+rtl/pcie_lcrc32.sv
+rtl/pcie_tlp_header_check.sv
+rtl/pcie_dllp_codec.sv
+rtl/pcie_dll_rx_seq.sv
+rtl/pcie_dll_replay.sv
+rtl/pcie_tag_tracker.sv
+rtl/pcie_fc_credit_mgr.sv
+rtl/pcie_completion_codec.sv
+rtl/pcie_config_tlp_decoder.sv
+rtl/pcie_tlp_bridge.sv
+rtl/pcie_endpoint_tlp.sv
+rtl/pcie_completion_tracker.sv
+rtl/pcie_completion_assembler.sv
+rtl/pcie_tlp_packet_buffer.sv

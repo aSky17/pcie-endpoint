@@ -1,0 +1,42 @@
+Layer,Feature,Status,Implementation Evidence,Notes
+Transaction,Abstract packet-level request/response endpoint,implemented_source_unverified,rtl/pcie_endpoint.sv,Not a serialized PCIe TLP interface
+Transaction,Configuration Read/Write subset,partially_implemented,rtl/pcie_endpoint.sv,Vendor/Device ID and selected modeled fields only
+Transaction,BAR0 memory window and byte enables,partially_implemented,rtl/pcie_endpoint.sv,One 256-byte BAR0 window in default configuration
+Transaction,BAR0 size probe,implemented_source_unverified,rtl/pcie_endpoint.sv;tb/tests/pcie_rtl_smoke_tb.sv,Abstract configuration model
+Transaction,3-DW one-DWORD Memory Request header codec,partially_implemented,rtl/pcie_tlp_codec.sv,Used by bounded TLP bridge; only single-DWORD 3-DW Memory Requests supported
+Transaction,Configuration Type 0 TLP decoder,implemented_source_unverified,rtl/pcie_config_tlp_decoder.sv;tb/tests/pcie_tlp_endpoint_tb.sv,One-DWORD Configuration Read/Write; target BDF must match configured Completer ID
+Transaction,Integrated bounded TLP ingress/egress,implemented_source_unverified,rtl/pcie_tlp_bridge.sv;rtl/pcie_endpoint_tlp.sv;tb/tests/pcie_tlp_endpoint_tb.sv,3-DW one-DWORD Memory and Configuration Type 0 Read/Write only; no multi-DWORD payloads
+Transaction,3-DW Cpl/CplD header codec,partially_implemented,rtl/pcie_completion_codec.sv,Bounded zero/one-DWORD payload header cases
+Transaction,Full TLP format/type coverage,not_implemented,,Only selected header subset exists
+Transaction,4-DW headers and 64-bit addressing,not_implemented,,
+Transaction,Multi-DWORD payload support,not_implemented,,
+Transaction,Completion byte-count/lower-address full rules,not_implemented,,
+Transaction,Multiple outstanding requester operations,not_implemented,,
+Transaction,Split Completions,not_implemented,,
+Transaction,Ordering attributes and TC/VC,not_implemented,,
+Transaction,Endpoint DMA/requester,not_implemented,,
+Transaction,MSI/MSI-X,not_implemented,,
+Transaction,Power Management and AER capabilities,not_implemented,,
+Data Link,Reflected CRC-32 helper,implemented_source_unverified,rtl/pcie_lcrc32.sv,Must validate exact PCIe LCRC byte/bit ordering before compliance claims
+Data Link,Single-outstanding abstract replay controller,partially_implemented,rtl/pcie_dll_replay.sv,Not full replay buffer or protocol-exact DLLP flow
+Data Link,Sequence number tracking in abstract replay model,partially_implemented,rtl/pcie_dll_replay.sv,One outstanding packet only
+Data Link,ACK/NAK and timeout-triggered replay,partially_implemented,rtl/pcie_dll_replay.sv,ACK/NAK inputs are abstract signals
+Data Link,DLLP encoding/decoding,not_implemented,,
+Data Link,Receive-side sequence checking/deduplication,not_implemented,,
+Data Link,Full replay queue and retry policy,not_implemented,,
+Data Link,Flow-control credit accounting helper,partially_implemented,rtl/pcie_fc_credit_mgr.sv,Abstract update inputs; not integrated or per-VC
+Data Link,Flow-control DLLP initialization/update,not_implemented,,
+Data Link,Per-VC flow control and full link state machine,not_implemented,,
+Physical,Packet-level behavioral transport,partially_implemented,tb/interface/pcie_packet_if.sv,No independent link model yet
+Physical,LTSSM,not_implemented,,
+Physical,PIPE interface,not_implemented,,
+Physical,Gen4 PHY/SerDes/electrical behavior,not_implemented,,
+Verification,UVM active agent/driver/monitor,implemented_source_unverified,tb/agent;tb/driver;tb/monitor,Must compile/run on target simulator
+Verification,Reference model and scoreboard,partially_implemented,tb/scoreboard/pcie_scoreboard.sv,Models only implemented abstract subset
+Verification,Functional coverage,implemented_source_unverified,tb/coverage/pcie_coverage.sv,Packet-level supported-subset bins expanded in v7; standalone blocks remain separate
+Verification,SVA for Endpoint and standalone modules,partially_implemented,rtl/pcie_endpoint.sv;rtl/pcie_dll_replay.sv;rtl/pcie_fc_credit_mgr.sv;rtl/pcie_tag_tracker.sv,Must validate assertion behavior in simulator
+Verification,Directed and constrained-random tests,partially_implemented,tb/tests;tb/sequences,No simulator execution evidence in authoring environment
+Verification,Code coverage closure,not_verified,,Requires target simulator and measured coverage reports
+Verification,Full PCIe compliance/interoperability,not_implemented,,No PHY or compliance suite
+Transaction,Standalone Completion association tracker,implemented_source_unverified,rtl/pcie_completion_tracker.sv;tb/tests/pcie_completion_tracker_tb.sv,Checks Tag/Requester ID/Byte Count/Lower Address association; not integrated with requester/DMA
+Verification,Boundary and BAR edge directed sequence,implemented_source_unverified,tb/sequences/pcie_boundary_seq.sv;tb/tests/pcie_boundary_test.sv,First/interior/last BAR DWORD; sparse/zero byte enables; outside-BAR access

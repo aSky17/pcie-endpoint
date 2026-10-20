@@ -1,8 +1,13 @@
+sim/logs/*
+sim/waves/*
+sim/coverage/*
+!sim/logs/.gitkeep
+!sim/waves/.gitkeep
+!sim/coverage/.gitkeep
 work/
 transcript
-vsim.wlf
 *.wlf
+*.ucdb
 *.vcd
 *.fst
-results/*
-!results/.gitkeep
+*.log

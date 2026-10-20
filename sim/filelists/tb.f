@@ -1,1 +1,13 @@
-# Add testbench files here as the verification environment is implemented.
+tb/pkg/pcie_tb_pkg.sv
+tb/top/pcie_tb_top.sv
+tb/sequences/pcie_config_seq.sv
+tb/sequences/pcie_byte_enable_seq.sv
+tb/sequences/pcie_error_seq.sv
+tb/sequences/pcie_backpressure_seq.sv
+tb/tests/pcie_config_test.sv
+tb/tests/pcie_byte_enable_test.sv
+tb/tests/pcie_error_test.sv
+tb/tests/pcie_backpressure_test.sv
+tb/sequences/pcie_reset_prepare_seq.sv
+tb/sequences/pcie_reset_check_seq.sv
+tb/tests/pcie_reset_test.sv
